@@ -10,10 +10,135 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const allEmployees = [];
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
+// Prompt to select user roles
+function teamMem() {
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "choice",
+            message: "What is your role?",
+            choices: ["Manager", "Engineer", "Intern", "Summary"],
+        },
 
+    ]).then(function ({choice}) {       
+        if (choice === "Manager") {
+            managerProfile();
+        } else if (choice === "Engineer") {
+            engineerProfile();
+        } else if (choice === "Intern") {
+            internProfile();
+        } else if (choice === "Summary") {
+            htmlGen(outputPath, render(allEmployees))
+        };
+    });
+};
+
+// Prompt for manager data
+function managerProfile() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            message: "What is your name?",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "What is your id?",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "What is your email?",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "What is your office Number?",
+            name: "officeNumber"
+        },
+    ]).then(function (answer) {
+        let manager = new Manager(answer.name, answer.id, answer.email, answer.officeNumber)
+        allEmployees.push(manager);
+
+        teamMem()
+    })
+};
+
+// Prompt for Engineer data
+function engineerProfile() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            message: "What is your name?",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "What is your id?",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "What is your email?",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "What is your GitHub user name?",
+            name: "github"
+        },
+    ]).then(function (answer) {
+        let engineer = new Engineer(answer.name, answer.id, answer.email, answer.github)
+        allEmployees.push(engineer);
+
+        teamMem()
+    })
+};
+
+// Prompt for Intern data
+function internProfile() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            message: "What is your name?",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "What is your id?",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "What is your email?",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "What is your school?",
+            name: "school"
+        },
+    ]).then(function (answer) {
+        let intern = new Intern(answer.name, answer.id, answer.email, answer.school)
+        allEmployees.push(intern);
+
+        teamMem()
+    })
+};
+
+
+function htmlGen(fileName, data) {
+    fs.writeFile(fileName, data, "utf8", function (err) {
+        if (err) {
+            throw err;
+        }
+        console.log("Employee info has been saved");
+    });
+};
+
+teamMem()
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
