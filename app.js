@@ -31,7 +31,7 @@ function teamMem() {
             internProfile();
         } else if (choice === "Summary") {
             htmlGen(outputPath, render(allEmployees))
-        };
+        } 
     });
 };
 
