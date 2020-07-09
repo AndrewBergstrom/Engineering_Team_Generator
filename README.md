@@ -1,7 +1,5 @@
 # Engineering_Team_Generator
 
-  # Team Profile Generator
-
   ## Project Creator: 
   ### Andrew Bergstrom
 ---
